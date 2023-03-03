@@ -1,14 +1,20 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-function Inputs({ type, dataTestid, onChange, name }) {
+function Inputs({ type, dataTestid, onChange, name, value, labelText }) {
   return (
-    <input
-      type={ type }
-      name={ name }
-      data-testid={ dataTestid }
-      onChange={ onChange }
-    />
+    <>
+
+      <input
+        type={ type }
+        name={ name }
+        data-testid={ dataTestid }
+        onChange={ onChange }
+        value={ value }
+        id={ dataTestid }
+      />
+      {labelText && <label htmlFor={ dataTestid }>{labelText}</label>}
+    </>
   );
 }
 

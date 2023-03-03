@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
+import SearchBar from './SearchBar';
 
 function Header({ title, withProfileIcon = true, withSearchBar = true }) {
   const profileLink = '/profile';
@@ -31,7 +32,7 @@ function Header({ title, withProfileIcon = true, withSearchBar = true }) {
           <button onClick={ handleClick }>
             <img src={ searchIcon } alt="searchIcon" data-testid="search-top-btn" />
           </button>
-          {showSearchBar && <input type="text" data-testid="search-input" />}
+          {showSearchBar && <SearchBar />}
         </div>
       )}
     </div>
