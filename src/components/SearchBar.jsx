@@ -1,24 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import Buttons from './Buttons';
 import Inputs from './Inputs';
 import apiFetch from '../helpers/apiFetch';
+import RecipesContext from '../context/recipesContext';
 
 function SearchBar() {
   const [searchInfo, setSearchInfo] = useState({
     searchInput: '',
     searchRadio: '',
   });
-  const [pageLocation, setPageLocation] = useState('');
+  const { apiResponse, setApiResponse } = useContext(RecipesContext);
+  const [apiType, setApiType] = useState('');
 
   const location = useLocation();
   const { pathname } = location;
+  const page = pathname.split('/')[1];
+
   const history = useHistory();
 
   useEffect(() => {
-    if (pathname === '/meals') setPageLocation('themealdb');
-    if (pathname === '/drinks') setPageLocation('thecocktaildb');
-    return () => setPageLocation('');
+    if (page === 'meals') setApiType('themealdb');
+    if (page === 'drinks') setApiType('thecocktaildb');
+    return () => setApiType('');
   }, []);
 
   const { searchInput, searchRadio } = searchInfo;
@@ -48,15 +52,13 @@ function SearchBar() {
   };
 
   const apiCall = async (endpoint) => {
-    const response = await apiFetch(pageLocation, endpoint);
+    const response = await apiFetch(apiType, endpoint);
     return response;
   };
 
   const handleRedirect = (response) => {
-    const page = pathname.split('/')[1];
-
-    if (response[page].length === 1) {
-      const firstOfArray = response[page][0];
+    if (response.length === 1) {
+      const firstOfArray = response[0];
       const id = firstOfArray.idMeal || firstOfArray.idDrink;
       history.push(`/${page}/${id}`);
     }
@@ -69,9 +71,20 @@ function SearchBar() {
 
     if (!endpoint) return;
 
-    const apiResponse = await apiCall(endpoint);
+    const response = await apiCall(endpoint);
 
-    handleRedirect(apiResponse);
+    if (response[page] === null) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+      return;
+    }
+
+    if (response[page]) {
+      setApiResponse({
+        ...apiResponse,
+        [page]: response[page],
+      });
+      handleRedirect(response[page]);
+    }
   };
 
   return (
@@ -111,7 +124,7 @@ function SearchBar() {
         <Buttons
           type="submit"
           dataTestid="exec-search-btn"
-          onChange={ handleChange }
+          labelText="Enviar"
         />
       </form>
     </div>
