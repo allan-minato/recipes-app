@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import Buttons from './Buttons';
 import Inputs from './Inputs';
 import apiFetch from '../helpers/apiFetch';
@@ -13,6 +13,7 @@ function SearchBar() {
 
   const location = useLocation();
   const { pathname } = location;
+  const history = useHistory();
 
   useEffect(() => {
     if (pathname === '/meals') setPageLocation('themealdb');
@@ -48,16 +49,29 @@ function SearchBar() {
 
   const apiCall = async (endpoint) => {
     const response = await apiFetch(pageLocation, endpoint);
-    console.log(response);
+    return response;
   };
 
-  const handleSubmit = (event) => {
+  const handleRedirect = (response) => {
+    const page = pathname.split('/')[1];
+
+    if (response[page].length === 1) {
+      const firstOfArray = response[page][0];
+      const id = firstOfArray.idMeal || firstOfArray.idDrink;
+      history.push(`/${page}/${id}`);
+    }
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
     const endpoint = getEndpoint();
 
     if (!endpoint) return;
 
-    apiCall(endpoint);
+    const apiResponse = await apiCall(endpoint);
+
+    handleRedirect(apiResponse);
   };
 
   return (
