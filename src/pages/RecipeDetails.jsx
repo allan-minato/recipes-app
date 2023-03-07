@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
+import Carousel from '../components/Carousel';
 import useFetch from '../hooks/useFetch';
 import {
   getDrinkByID,
@@ -8,22 +9,24 @@ import {
   getMealByID,
   getMealsRecommendations,
 } from '../services/fetchAPI';
-import { treatObject } from '../services/treatObject';
+import { treatReceipeObject } from '../services/treatObject';
+import styles from '../styles/pages/RecipeDetails.module.css';
 
 function RecipeDetails() {
   const [, pathname, id] = useLocation().pathname.split('/');
+  const isMeal = pathname === 'meals';
 
   const {
     data: dataReceipe,
     isLoading,
     error,
-  } = useFetch(pathname === 'meals' ? getMealByID : getDrinkByID, id);
+  } = useFetch(isMeal ? getMealByID : getDrinkByID, id);
 
   const { data: dataRecommendations } = useFetch(
-    pathname === 'meals' ? getDrinksRecommendations : getMealsRecommendations,
+    isMeal ? getDrinksRecommendations : getMealsRecommendations,
   );
 
-  const data = treatObject(dataReceipe, pathname);
+  const data = treatReceipeObject(dataReceipe, pathname);
   const {
     image,
     title,
@@ -42,7 +45,7 @@ function RecipeDetails() {
       {error ? (
         <p>Erro</p>
       ) : (
-        <div>
+        <div className={ styles.mainContainer }>
           <img
             src={ image }
             alt="Imagem da Receita"
@@ -82,6 +85,10 @@ function RecipeDetails() {
           {video && (
             <iframe data-testid="video" title="Youtube Video" src={ video } />
           )}
+          <div>
+            <p>Recomendações: </p>
+            <Carousel data={ dataRecommendations } pathname={ pathname } />
+          </div>
         </div>
       )}
     </div>
