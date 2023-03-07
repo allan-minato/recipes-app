@@ -2,22 +2,26 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import Carousel from '../components/Carousel';
+import Header from '../components/Header';
+
 import useFetch from '../hooks/useFetch';
+import { MEALS } from '../services/constTypes';
 import {
   getDrinkByID,
   getDrinksRecommendations,
   getMealByID,
   getMealsRecommendations,
 } from '../services/fetchAPI';
-import { treatReceipeObject } from '../services/treatObject';
+import { treatRecipeData } from '../services/treatObject';
+
 import styles from '../styles/pages/RecipeDetails.module.css';
 
 function RecipeDetails() {
   const [, pathname, id] = useLocation().pathname.split('/');
-  const isMeal = pathname === 'meals';
+  const isMeal = pathname === MEALS;
 
   const {
-    data: dataReceipe,
+    data: dataRecipe,
     isLoading,
     error,
   } = useFetch(isMeal ? getMealByID : getDrinkByID, id);
@@ -26,7 +30,8 @@ function RecipeDetails() {
     isMeal ? getDrinksRecommendations : getMealsRecommendations,
   );
 
-  const data = treatReceipeObject(dataReceipe, pathname);
+  const data = treatRecipeData(dataRecipe, pathname);
+
   const {
     image,
     title,
@@ -45,51 +50,54 @@ function RecipeDetails() {
       {error ? (
         <p>Erro</p>
       ) : (
-        <div className={ styles.mainContainer }>
-          <img
-            src={ image }
-            alt="Imagem da Receita"
-            width="200"
-            data-testid="recipe-photo"
-          />
-          <h1 data-testid="recipe-title">{title}</h1>
-          <p data-testid="recipe-category">
-            Categorias:
-            {' '}
-            {category}
-            {' '}
-            {alcoholic}
-          </p>
-          <p data-testid="instructions">{instructions}</p>
-          <table>
-            <thead>
-              <tr>
-                <th>Ingrediente</th>
-                <th>Quantidade</th>
-              </tr>
-            </thead>
-            {ingredients && (
-              <tbody>
-                {ingredients.map((ingredient, index) => (
-                  <tr
-                    key={ ingredient }
-                    data-testid={ `${index}-ingredient-name-and-measure` }
-                  >
-                    <td>{ingredient}</td>
-                    <td>{measures[index] ?? '-'}</td>
-                  </tr>
-                ))}
-              </tbody>
+        <>
+          <Header />
+          <div className={ styles.mainContainer }>
+            <img
+              src={ image }
+              alt="Imagem da Receita"
+              width="200"
+              data-testid="recipe-photo"
+            />
+            <h1 data-testid="recipe-title">{title}</h1>
+            <p data-testid="recipe-category">
+              Categories:
+              {' '}
+              {category}
+              {' '}
+              {alcoholic}
+            </p>
+            <p data-testid="instructions">{instructions}</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Ingredient</th>
+                  <th>Quantity</th>
+                </tr>
+              </thead>
+              {ingredients && (
+                <tbody>
+                  {ingredients.map((ingredient, index) => (
+                    <tr
+                      key={ ingredient }
+                      data-testid={ `${index}-ingredient-name-and-measure` }
+                    >
+                      <td>{ingredient}</td>
+                      <td>{measures[index] ?? '-'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              )}
+            </table>
+            {video && (
+              <iframe data-testid="video" title="Youtube Video" src={ video } />
             )}
-          </table>
-          {video && (
-            <iframe data-testid="video" title="Youtube Video" src={ video } />
-          )}
-          <div>
-            <p>Recomendações: </p>
-            <Carousel data={ dataRecommendations } pathname={ pathname } />
+            <div>
+              <p>Recommendations: </p>
+              <Carousel data={ dataRecommendations } pathname={ pathname } />
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

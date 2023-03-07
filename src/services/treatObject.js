@@ -1,7 +1,7 @@
-import { ONE, THIRTY_TWO, ZERO } from './constTypes';
+import { DRINK, MEAL, MEALS, ONE, THIRTY_TWO, ZERO } from './constTypes';
 
-export const treatReceipeObject = (obj, receipeType) => {
-  const type = receipeType === 'meals' ? 'Meal' : 'Drink';
+export const treatRecipeData = (obj, recipeType) => {
+  const type = recipeType === MEALS ? MEAL : DRINK;
 
   const treatedObject = {};
 
@@ -53,8 +53,8 @@ export const treatReceipeObject = (obj, receipeType) => {
   return treatedObject;
 };
 
-export const treatRecommendationsObject = (obj, receipeType) => {
-  const type = receipeType === 'meals' ? 'Drink' : 'Meal';
+export const treatRecommendationsData = (obj, recipeType) => {
+  const type = recipeType === MEALS ? DRINK : MEAL;
 
   return Object.values(obj)
     .map((key) => {

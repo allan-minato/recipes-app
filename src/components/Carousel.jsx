@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { SIX } from '../services/constTypes';
-import { treatRecommendationsObject } from '../services/treatObject';
+import { treatRecommendationsData } from '../services/treatObject';
 import styles from '../styles/components/Carousel.module.css';
 
 function Carousel({ data, pathname }) {
-  const dataRecommendations = treatRecommendationsObject(data, pathname);
+  const dataRecommendations = treatRecommendationsData(data, pathname);
 
   return (
     <div className={ styles.carouselContainer }>
