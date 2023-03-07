@@ -1,13 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-function Buttons({ type, dataTestid, disabled }) {
+function Buttons({ type, dataTestid, disabled, label, onClick, classN }) {
   return (
-    <input
+    <button
       type={ type }
       data-testid={ dataTestid }
       disabled={ disabled }
-    />
+      onClick={ onClick }
+      className={ classN }
+    >
+      { label }
+    </button>
   );
 }
 

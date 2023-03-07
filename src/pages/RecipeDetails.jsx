@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import Buttons from '../components/Buttons';
 
 import Carousel from '../components/Carousel';
 import Header from '../components/Header';
@@ -97,6 +98,12 @@ function RecipeDetails() {
               <Carousel data={ dataRecommendations } pathname={ pathname } />
             </div>
           </div>
+          <Buttons
+            type="button"
+            label="Start Recipe"
+            dataTestid="start-recipe-btn"
+            classN={ styles.btnRecipe }
+          />
         </>
       )}
     </div>
