@@ -20,7 +20,6 @@ function RenderRecipes() {
 
   useEffect(() => {
     intervalRecipes(0);
-    console.log(apiResponse);
   }, [apiResponse]);
 
   return (
