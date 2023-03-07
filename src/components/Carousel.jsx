@@ -1,11 +1,18 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { SIX } from '../services/constTypes';
+import useFetch from '../hooks/useFetch';
+import { MEALS, SIX } from '../services/constTypes';
+import { getDrinksRecommendations, getMealsRecommendations } from '../services/fetchAPI';
 import { treatRecommendationsData } from '../services/treatObject';
+
 import styles from '../styles/components/Carousel.module.css';
 
-function Carousel({ data, pathname }) {
+function Carousel({ pathname }) {
+  const { data } = useFetch(
+    pathname === MEALS ? getDrinksRecommendations : getMealsRecommendations,
+  );
+
   const dataRecommendations = treatRecommendationsData(data, pathname);
 
   return (

@@ -11,3 +11,6 @@ export const MEAL = 'Meal';
 export const MEALS = 'meals';
 export const DRINK = 'Drink';
 export const DRINKS = 'Drinks';
+
+// KEYS
+export const DONE_RECIPES = 'doneRecipes';
