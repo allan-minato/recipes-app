@@ -6,11 +6,13 @@ import Carousel from '../components/Carousel';
 import Header from '../components/Header';
 
 import useFetch from '../hooks/useFetch';
-import { DONE_RECIPES, MEALS } from '../services/constTypes';
 import {
-  getDrinkByID,
-  getMealByID,
-} from '../services/fetchAPI';
+  DONE_RECIPES,
+  IN_PROGRESS_RECIPES,
+  MEALS,
+  ZERO,
+} from '../services/constTypes';
+import { getDrinkByID, getMealByID } from '../services/fetchAPI';
 import { getFromLocalStorage } from '../services/localStorageHelpers';
 import { treatRecipeData } from '../services/treatObject';
 
@@ -26,9 +28,15 @@ function RecipeDetails() {
   } = useFetch(pathname === MEALS ? getMealByID : getDrinkByID, id);
 
   const data = treatRecipeData(dataRecipe, pathname);
+
   const showButton = getFromLocalStorage(DONE_RECIPES).some(
     (key) => key.id === id,
   );
+
+  const isRecipeInProgress = getFromLocalStorage(IN_PROGRESS_RECIPES).length !== ZERO
+      && Object.keys(getFromLocalStorage(IN_PROGRESS_RECIPES)[pathname]).some(
+        (key) => key === id,
+      );
 
   const {
     image,
@@ -47,7 +55,6 @@ function RecipeDetails() {
       {isLoading ? (
         <p>Carregando...</p>
       ) : (
-        // <div>
         <div className={ styles.mainContainer }>
           {error ? (
             <p>Erro</p>
@@ -99,7 +106,9 @@ function RecipeDetails() {
               {!showButton && (
                 <Buttons
                   type="button"
-                  label="Start Recipe"
+                  label={
+                    isRecipeInProgress ? 'Continue Recipe' : 'Start Recipe'
+                  }
                   dataTestid="start-recipe-btn"
                   classN={ styles.btnRecipe }
                 />
@@ -109,7 +118,6 @@ function RecipeDetails() {
         </div>
       )}
     </>
-
   );
 }
 
