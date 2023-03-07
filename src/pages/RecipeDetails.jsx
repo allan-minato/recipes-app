@@ -2,20 +2,28 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import useFetch from '../hooks/useFetch';
-import { ONE, TWO } from '../services/constTypes';
-import { getDrinkByID, getMealByID } from '../services/fetchAPI';
+import {
+  getDrinkByID,
+  getDrinksRecommendations,
+  getMealByID,
+  getMealsRecommendations,
+} from '../services/fetchAPI';
 import { treatObject } from '../services/treatObject';
 
 function RecipeDetails() {
-  const param = useLocation().pathname.split('/');
+  const [, pathname, id] = useLocation().pathname.split('/');
 
   const {
-    data: dataAPI,
+    data: dataReceipe,
     isLoading,
     error,
-  } = useFetch(param[ONE] === 'meals' ? getMealByID : getDrinkByID, param[TWO]);
+  } = useFetch(pathname === 'meals' ? getMealByID : getDrinkByID, id);
 
-  const data = treatObject(dataAPI, param[ONE]);
+  const { data: dataRecommendations } = useFetch(
+    pathname === 'meals' ? getDrinksRecommendations : getMealsRecommendations,
+  );
+
+  const data = treatObject(dataReceipe, pathname);
   const {
     image,
     title,
@@ -26,7 +34,6 @@ function RecipeDetails() {
     measures,
     instructions,
   } = data;
-  console.log(video);
 
   return isLoading ? (
     <p>Carregando...</p>
