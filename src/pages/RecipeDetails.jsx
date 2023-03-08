@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import Buttons from '../components/Buttons';
 import Carousel from '../components/Carousel';
@@ -104,14 +104,16 @@ function RecipeDetails() {
                 <Carousel pathname={ pathname } />
               </div>
               {!showButton && (
-                <Buttons
-                  type="button"
-                  label={
-                    isRecipeInProgress ? 'Continue Recipe' : 'Start Recipe'
-                  }
-                  dataTestid="start-recipe-btn"
-                  classN={ styles.btnRecipe }
-                />
+                <Link to={ `/${pathname}/${id}/in-progress` }>
+                  <Buttons
+                    type="button"
+                    label={
+                      isRecipeInProgress ? 'Continue Recipe' : 'Start Recipe'
+                    }
+                    dataTestid="start-recipe-btn"
+                    classN={ styles.btnRecipe }
+                  />
+                </Link>
               )}
             </>
           )}
