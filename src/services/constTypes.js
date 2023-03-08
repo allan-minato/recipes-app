@@ -15,6 +15,7 @@ export const DRINKS = 'Drinks';
 // KEYS
 export const DONE_RECIPES = 'doneRecipes';
 export const IN_PROGRESS_RECIPES = 'inProgressRecipes';
+export const FAVORITE_RECIPES = 'favoriteRecipes';
 
 // TEST ID'S
 export const START_RECIPE_BTN = 'start-recipe-btn';

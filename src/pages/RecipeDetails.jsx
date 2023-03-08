@@ -9,16 +9,21 @@ import Header from '../components/Header';
 import useFetch from '../hooks/useFetch';
 import {
   DONE_RECIPES,
+  DRINK,
+  FAVORITE_RECIPES,
   IN_PROGRESS_RECIPES,
+  MEAL,
   MEALS,
   ZERO,
 } from '../services/constTypes';
 import { getDrinkByID, getMealByID } from '../services/fetchAPI';
-import { getFromLocalStorage } from '../services/localStorageHelpers';
+import {
+  getFromLocalStorage,
+  manageFavoriteInLocalStorage,
+} from '../services/localStorageHelpers';
 import { treatRecipeData } from '../services/treatObject';
 
 import styles from '../styles/pages/RecipeDetails.module.css';
-
 import shareIcon from '../images/shareIcon.svg';
 
 function RecipeDetails() {
@@ -33,19 +38,6 @@ function RecipeDetails() {
 
   const data = treatRecipeData(dataRecipe, pathname);
 
-  const showButton = getFromLocalStorage(DONE_RECIPES).some(
-    (key) => key.id === id,
-  );
-
-  const isRecipeInProgress = getFromLocalStorage(IN_PROGRESS_RECIPES).length !== ZERO
-    && Object.keys(getFromLocalStorage(IN_PROGRESS_RECIPES)[pathname]).some(
-      (key) => key === id,
-    );
-  const urlToClipboard = () => {
-    copy(window.location.href);
-    setisURLCopied(true);
-  };
-
   const {
     image,
     title,
@@ -55,7 +47,37 @@ function RecipeDetails() {
     ingredients,
     measures,
     instructions,
+    strArea,
   } = data;
+
+  const showButton = getFromLocalStorage(DONE_RECIPES).some(
+    (key) => key.id === id,
+  );
+
+  const isRecipeInProgress = getFromLocalStorage(IN_PROGRESS_RECIPES).length !== ZERO
+    && Object.keys(getFromLocalStorage(IN_PROGRESS_RECIPES)[pathname]).some(
+      (key) => key === id,
+    );
+
+  const urlToClipboard = () => {
+    copy(window.location.href);
+    setisURLCopied(true);
+  };
+
+  const favoriteRecipe = () => {
+    manageFavoriteInLocalStorage(FAVORITE_RECIPES, {
+      id,
+      type:
+        pathname === MEALS
+          ? MEAL.toLocaleLowerCase()
+          : DRINK.toLocaleLowerCase(),
+      nationality: strArea || '',
+      category,
+      alcoholicOrNot: alcoholic || '',
+      name: title,
+      image,
+    });
+  };
 
   return (
     <>
@@ -118,6 +140,7 @@ function RecipeDetails() {
                   type="button"
                   label="Favorite Recipe"
                   dataTestid="favorite-btn"
+                  onClick={ favoriteRecipe }
                 />
               </div>
               {isURLCopied && (
