@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import copy from 'clipboard-copy';
 
 import Buttons from '../components/Buttons';
 import Carousel from '../components/Carousel';
@@ -18,8 +19,11 @@ import { treatRecipeData } from '../services/treatObject';
 
 import styles from '../styles/pages/RecipeDetails.module.css';
 
+import shareIcon from '../images/shareIcon.svg';
+
 function RecipeDetails() {
   const [, pathname, id] = useLocation().pathname.split('/');
+  const [isURLCopied, setisURLCopied] = useState(false);
 
   const {
     data: dataRecipe,
@@ -34,9 +38,13 @@ function RecipeDetails() {
   );
 
   const isRecipeInProgress = getFromLocalStorage(IN_PROGRESS_RECIPES).length !== ZERO
-      && Object.keys(getFromLocalStorage(IN_PROGRESS_RECIPES)[pathname]).some(
-        (key) => key === id,
-      );
+    && Object.keys(getFromLocalStorage(IN_PROGRESS_RECIPES)[pathname]).some(
+      (key) => key === id,
+    );
+  const urlToClipboard = () => {
+    copy(window.location.href);
+    setisURLCopied(true);
+  };
 
   const {
     image,
@@ -102,8 +110,9 @@ function RecipeDetails() {
               <div>
                 <Buttons
                   type="button"
-                  label="Share Recipe"
                   dataTestid="share-btn"
+                  icon={ shareIcon }
+                  onClick={ urlToClipboard }
                 />
                 <Buttons
                   type="button"
@@ -111,6 +120,11 @@ function RecipeDetails() {
                   dataTestid="favorite-btn"
                 />
               </div>
+              {isURLCopied && (
+                <div>
+                  <p>Link copied!</p>
+                </div>
+              )}
               <div>
                 <p>Recommendations: </p>
                 <Carousel pathname={ pathname } />
@@ -123,7 +137,7 @@ function RecipeDetails() {
                       isRecipeInProgress ? 'Continue Recipe' : 'Start Recipe'
                     }
                     dataTestid="start-recipe-btn"
-                    classN={ styles.btnRecipe }
+                    btnClass={ styles.btnRecipe }
                   />
                 </Link>
               )}
