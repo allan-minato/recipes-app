@@ -100,6 +100,18 @@ function RecipeDetails() {
                 <iframe data-testid="video" title="Youtube Video" src={ video } />
               )}
               <div>
+                <Buttons
+                  type="button"
+                  label="Share Recipe"
+                  dataTestid="share-btn"
+                />
+                <Buttons
+                  type="button"
+                  label="Favorite Recipe"
+                  dataTestid="favorite-btn"
+                />
+              </div>
+              <div>
                 <p>Recommendations: </p>
                 <Carousel pathname={ pathname } />
               </div>
