@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import copy from 'clipboard-copy';
 
 import Buttons from '../components/Buttons';
 import Carousel from '../components/Carousel';
@@ -10,10 +9,13 @@ import useFetch from '../hooks/useFetch';
 import {
   DONE_RECIPES,
   DRINK,
+  ERROR_MESSAGE,
+  FAVORITE_BTN,
   FAVORITE_RECIPES,
   IN_PROGRESS_RECIPES,
   MEAL,
   MEALS,
+  SHARE_BTN,
   TWO_THOUSAND,
   ZERO,
 } from '../services/constTypes';
@@ -65,14 +67,17 @@ function RecipeDetails() {
     );
 
   const urlToClipboard = () => {
-    copy(window.location.href);
+    navigator.clipboard.writeText(window.location.href);
     setIsURLCopied(true);
-    setTimeout(() => { setIsURLCopied(false); }, TWO_THOUSAND);
+    setTimeout(() => {
+      setIsURLCopied(false);
+    }, TWO_THOUSAND);
   };
 
-  const isFavorite = useCallback(() => getFromLocalStorage(FAVORITE_RECIPES).some(
-    (recipe) => recipe.id === id,
-  ), [id]);
+  const isFavorite = useCallback(
+    () => getFromLocalStorage(FAVORITE_RECIPES).some((recipe) => recipe.id === id),
+    [id],
+  );
 
   const favoriteRecipe = () => {
     manageFavoritesInLocalStorage(FAVORITE_RECIPES, {
@@ -102,7 +107,7 @@ function RecipeDetails() {
       ) : (
         <div className={ styles.mainContainer }>
           {error ? (
-            <p>Erro</p>
+            <p data-testid={ ERROR_MESSAGE }>Erro</p>
           ) : (
             <>
               <img
@@ -147,13 +152,13 @@ function RecipeDetails() {
               <div>
                 <Buttons
                   type="button"
-                  dataTestid="share-btn"
+                  dataTestid={ SHARE_BTN }
                   icon={ shareIcon }
                   onClick={ urlToClipboard }
                 />
                 <Buttons
                   type="button"
-                  dataTestid="favorite-btn"
+                  dataTestid={ FAVORITE_BTN }
                   icon={ recipeFavorite ? blackHeartIcon : whiteHeartIcon }
                   onClick={ favoriteRecipe }
                 />

@@ -21,3 +21,6 @@ export const FAVORITE_RECIPES = 'favoriteRecipes';
 // TEST ID'S
 export const START_RECIPE_BTN = 'start-recipe-btn';
 export const RECIPE_TITLE = 'recipe-title';
+export const SHARE_BTN = 'share-btn';
+export const FAVORITE_BTN = 'favorite-btn';
+export const ERROR_MESSAGE = 'error-message';

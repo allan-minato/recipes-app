@@ -4,11 +4,7 @@ import { Router } from 'react-router-dom';
 import { render } from '@testing-library/react';
 
 function withRouter(component, history) {
-  return (
-    <Router history={ history }>
-      { component }
-    </Router>
-  );
+  return <Router history={ history }>{component}</Router>;
 }
 
 export function renderWithRouter(
