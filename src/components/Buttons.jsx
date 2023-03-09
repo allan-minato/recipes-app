@@ -9,6 +9,7 @@ function Buttons({ type, dataTestid, disabled, label, onClick, btnClass, icon })
       disabled={ disabled }
       onClick={ onClick }
       className={ btnClass }
+      src={ icon }
     >
       {icon
         && <img src={ icon } alt="Button Icon" />}

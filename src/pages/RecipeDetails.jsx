@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import copy from 'clipboard-copy';
 
@@ -14,21 +14,26 @@ import {
   IN_PROGRESS_RECIPES,
   MEAL,
   MEALS,
+  TWO_THOUSAND,
   ZERO,
 } from '../services/constTypes';
 import { getDrinkByID, getMealByID } from '../services/fetchAPI';
 import {
   getFromLocalStorage,
-  manageFavoriteInLocalStorage,
+  manageFavoritesInLocalStorage,
 } from '../services/localStorageHelpers';
 import { treatRecipeData } from '../services/treatObject';
 
 import styles from '../styles/pages/RecipeDetails.module.css';
 import shareIcon from '../images/shareIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 
 function RecipeDetails() {
+  const [isURLCopied, setIsURLCopied] = useState(false);
+  const [recipeFavorite, setRecipeFavorite] = useState(false);
+
   const [, pathname, id] = useLocation().pathname.split('/');
-  const [isURLCopied, setisURLCopied] = useState(false);
 
   const {
     data: dataRecipe,
@@ -61,11 +66,16 @@ function RecipeDetails() {
 
   const urlToClipboard = () => {
     copy(window.location.href);
-    setisURLCopied(true);
+    setIsURLCopied(true);
+    setTimeout(() => { setIsURLCopied(false); }, TWO_THOUSAND);
   };
 
+  const isFavorite = useCallback(() => getFromLocalStorage(FAVORITE_RECIPES).some(
+    (recipe) => recipe.id === id,
+  ), [id]);
+
   const favoriteRecipe = () => {
-    manageFavoriteInLocalStorage(FAVORITE_RECIPES, {
+    manageFavoritesInLocalStorage(FAVORITE_RECIPES, {
       id,
       type:
         pathname === MEALS
@@ -77,7 +87,12 @@ function RecipeDetails() {
       name: title,
       image,
     });
+    setRecipeFavorite(isFavorite);
   };
+
+  useEffect(() => {
+    setRecipeFavorite(isFavorite);
+  }, [isFavorite]);
 
   return (
     <>
@@ -138,8 +153,8 @@ function RecipeDetails() {
                 />
                 <Buttons
                   type="button"
-                  label="Favorite Recipe"
                   dataTestid="favorite-btn"
+                  icon={ recipeFavorite ? blackHeartIcon : whiteHeartIcon }
                   onClick={ favoriteRecipe }
                 />
               </div>
