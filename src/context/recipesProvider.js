@@ -7,14 +7,22 @@ function RecipesProvider({ children }) {
     meals: [],
     drinks: [],
   });
+  const [filteredRecipes, setFilteredRecipes] = useState({
+    meals: [],
+    drinks: [],
+  });
 
   const value = useMemo(
     () => ({
       apiResponse,
       setApiResponse,
+      filteredRecipes,
+      setFilteredRecipes,
+
     }),
     [
       apiResponse,
+      filteredRecipes,
     ],
   );
 

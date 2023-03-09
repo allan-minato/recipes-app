@@ -1,13 +1,12 @@
 import React from 'react';
 import Header from '../components/Header';
-import RenderRecipes from '../components/RenderRecipes';
+import Recipes from './Recipes';
 
 function Drink() {
   return (
     <div>
       <Header title="Drinks" />
-      <RenderRecipes />
-
+      <Recipes />
     </div>
   );
 }

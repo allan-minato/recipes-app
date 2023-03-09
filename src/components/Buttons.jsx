@@ -8,6 +8,7 @@ function Buttons({ type, dataTestid, disabled, labelText, onClick }) {
       data-testid={ dataTestid }
       disabled={ disabled }
       onClick={ onClick }
+      key={ labelText }
     >
       {labelText}
     </button>

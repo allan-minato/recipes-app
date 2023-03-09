@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import Buttons from './Buttons';
 import Inputs from './Inputs';
@@ -10,8 +10,7 @@ function SearchBar() {
     searchInput: '',
     searchRadio: '',
   });
-  const { apiResponse, setApiResponse } = useContext(RecipesContext);
-  const [apiType, setApiType] = useState('');
+  const { apiResponse, setApiResponse, setFilteredRecipes } = useContext(RecipesContext);
 
   const location = useLocation();
   const { pathname } = location;
@@ -19,11 +18,7 @@ function SearchBar() {
 
   const history = useHistory();
 
-  useEffect(() => {
-    if (page === 'meals') setApiType('themealdb');
-    if (page === 'drinks') setApiType('thecocktaildb');
-    return () => setApiType('');
-  }, []);
+  const apiType = page === 'meals' ? 'themealdb' : 'thecocktaildb';
 
   const { searchInput, searchRadio } = searchInfo;
 
@@ -79,10 +74,12 @@ function SearchBar() {
     }
 
     if (response[page]) {
-      setApiResponse({
+      const api = {
         ...apiResponse,
         [page]: response[page],
-      });
+      };
+      setApiResponse(api);
+      setFilteredRecipes(api);
       handleRedirect(response[page]);
     }
   };
