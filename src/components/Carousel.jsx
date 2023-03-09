@@ -2,11 +2,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import useFetch from '../hooks/useFetch';
-import { MEALS, SIX } from '../services/constTypes';
 import { getDrinksRecommendations, getMealsRecommendations } from '../services/fetchAPI';
 import { treatRecommendationsData } from '../services/treatObject';
 
 import styles from '../styles/components/Carousel.module.css';
+
+import { MEALS, SIX } from '../services/constTypes';
 
 function Carousel({ pathname }) {
   const { data } = useFetch(
@@ -36,7 +37,6 @@ function Carousel({ pathname }) {
 }
 
 Carousel.propTypes = {
-  data: PropTypes.shape([]),
   pathname: PropTypes.string,
 }.isRequired;
 

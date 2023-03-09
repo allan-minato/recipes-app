@@ -6,19 +6,6 @@ import Carousel from '../components/Carousel';
 import Header from '../components/Header';
 
 import useFetch from '../hooks/useFetch';
-import {
-  DONE_RECIPES,
-  DRINK,
-  ERROR_MESSAGE,
-  FAVORITE_BTN,
-  FAVORITE_RECIPES,
-  IN_PROGRESS_RECIPES,
-  MEAL,
-  MEALS,
-  SHARE_BTN,
-  TWO_THOUSAND,
-  ZERO,
-} from '../services/constTypes';
 import { getDrinkByID, getMealByID } from '../services/fetchAPI';
 import {
   getFromLocalStorage,
@@ -30,6 +17,26 @@ import styles from '../styles/pages/RecipeDetails.module.css';
 import shareIcon from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+
+import {
+  DONE_RECIPES,
+  DRINK,
+  ERROR_MESSAGE,
+  FAVORITE_BTN,
+  FAVORITE_RECIPES,
+  INSTRUCTIONS,
+  IN_PROGRESS_RECIPES,
+  MEAL,
+  MEALS,
+  RECIPE_CATEGORY,
+  RECIPE_PHOTO,
+  RECIPE_TITLE,
+  SHARE_BTN,
+  START_RECIPE_BTN,
+  TWO_THOUSAND,
+  VIDEO,
+  ZERO,
+} from '../services/constTypes';
 
 function RecipeDetails() {
   const [isURLCopied, setIsURLCopied] = useState(false);
@@ -43,8 +50,6 @@ function RecipeDetails() {
     error,
   } = useFetch(pathname === MEALS ? getMealByID : getDrinkByID, id);
 
-  const data = treatRecipeData(dataRecipe, pathname);
-
   const {
     image,
     title,
@@ -55,7 +60,7 @@ function RecipeDetails() {
     measures,
     instructions,
     strArea,
-  } = data;
+  } = treatRecipeData(dataRecipe, pathname);
 
   const showButton = getFromLocalStorage(DONE_RECIPES).some(
     (key) => key.id === id,
@@ -66,18 +71,14 @@ function RecipeDetails() {
       (key) => key === id,
     );
 
-  const urlToClipboard = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setIsURLCopied(true);
-    setTimeout(() => {
-      setIsURLCopied(false);
-    }, TWO_THOUSAND);
-  };
-
   const isFavorite = useCallback(
     () => getFromLocalStorage(FAVORITE_RECIPES).some((recipe) => recipe.id === id),
     [id],
   );
+
+  useEffect(() => {
+    setRecipeFavorite(isFavorite);
+  }, [isFavorite]);
 
   const favoriteRecipe = () => {
     manageFavoritesInLocalStorage(FAVORITE_RECIPES, {
@@ -95,9 +96,13 @@ function RecipeDetails() {
     setRecipeFavorite(isFavorite);
   };
 
-  useEffect(() => {
-    setRecipeFavorite(isFavorite);
-  }, [isFavorite]);
+  const urlToClipboard = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setIsURLCopied(true);
+    setTimeout(() => {
+      setIsURLCopied(false);
+    }, TWO_THOUSAND);
+  };
 
   return (
     <>
@@ -114,17 +119,17 @@ function RecipeDetails() {
                 src={ image }
                 alt="Imagem da Receita"
                 width="200"
-                data-testid="recipe-photo"
+                data-testid={ RECIPE_PHOTO }
               />
-              <h1 data-testid="recipe-title">{title}</h1>
-              <p data-testid="recipe-category">
+              <h1 data-testid={ RECIPE_TITLE }>{title}</h1>
+              <p data-testid={ RECIPE_CATEGORY }>
                 Categories:
                 {' '}
                 {category}
                 {' '}
                 {alcoholic}
               </p>
-              <p data-testid="instructions">{instructions}</p>
+              <p data-testid={ INSTRUCTIONS }>{instructions}</p>
               <table>
                 <thead>
                   <tr>
@@ -147,7 +152,7 @@ function RecipeDetails() {
                 )}
               </table>
               {video && (
-                <iframe data-testid="video" title="Youtube Video" src={ video } />
+                <iframe data-testid={ VIDEO } title="Youtube Video" src={ video } />
               )}
               <div>
                 <Buttons
@@ -179,7 +184,7 @@ function RecipeDetails() {
                     label={
                       isRecipeInProgress ? 'Continue Recipe' : 'Start Recipe'
                     }
-                    dataTestid="start-recipe-btn"
+                    dataTestid={ START_RECIPE_BTN }
                     btnClass={ styles.btnRecipe }
                   />
                 </Link>

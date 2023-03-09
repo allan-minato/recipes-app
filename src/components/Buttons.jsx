@@ -19,7 +19,12 @@ function Buttons({ type, dataTestid, disabled, label, onClick, btnClass, icon })
 }
 
 Buttons.propTypes = {
+  btnClass: PropTypes.string,
   dataTestid: PropTypes.string,
+  disabled: PropTypes.string,
+  icon: PropTypes.string,
+  label: PropTypes.string,
+  onClick: PropTypes.string,
   type: PropTypes.string,
 }.isRequired;
 

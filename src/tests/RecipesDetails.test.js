@@ -5,6 +5,8 @@ import { act } from 'react-dom/test-utils';
 
 import { renderWithRouter } from './helpers/renderWithRouter';
 
+import App from '../App';
+
 import {
   DONE_RECIPES,
   ERROR_MESSAGE,
@@ -15,8 +17,6 @@ import {
   SHARE_BTN,
   START_RECIPE_BTN,
 } from '../services/constTypes';
-
-import App from '../App';
 
 const DRINKS_ROUTE = '/drinks/11007';
 const MEALS_ROUTE = '/meals/52772';
@@ -36,19 +36,20 @@ describe('Testes da Tela Recipe Details', () => {
     await waitFor(() => screen.findByTestId(START_RECIPE_BTN), {
       timeout: 3000,
     });
+
     const button = screen.getByTestId(START_RECIPE_BTN);
     expect(button).toBeInTheDocument();
   });
 
   it('Testa se o botão "Start Recipe" é ocultado quando a receita já foi finalizada', async () => {
     localStorage.setItem(DONE_RECIPES, JSON.stringify([{ id: '11007' }]));
-
     renderWithRouter(<App />, { initialEntries: [DRINKS_ROUTE] });
 
     await waitFor(() => screen.findByTestId(RECIPE_TITLE));
 
     const button = screen.queryByTestId(START_RECIPE_BTN);
     expect(button).toBeNull();
+
     localStorage.clear();
   });
 
@@ -61,13 +62,13 @@ describe('Testes da Tela Recipe Details', () => {
         },
       }),
     );
-
     renderWithRouter(<App />, { initialEntries: [DRINKS_ROUTE] });
 
     await waitFor(() => screen.findByTestId(RECIPE_TITLE));
 
     const button = screen.queryByTestId(START_RECIPE_BTN);
     expect(button.innerHTML).toBe('Continue Recipe');
+
     localStorage.clear();
   });
 
@@ -77,7 +78,6 @@ describe('Testes da Tela Recipe Details', () => {
         writeText: () => {},
       },
     });
-
     renderWithRouter(<App />, { initialEntries: [DRINKS_ROUTE] });
 
     await waitFor(() => screen.findByTestId(RECIPE_TITLE));
@@ -105,6 +105,7 @@ describe('Testes da Tela Recipe Details', () => {
     expect(buttonMeals.innerHTML).toBe(
       '<img src="blackHeartIcon.svg" alt="Button Icon">',
     );
+
     expect(JSON.parse(localStorage.getItem(FAVORITE_RECIPES))).not.toBeNull();
 
     localStorage.clear();
@@ -126,6 +127,7 @@ describe('Testes da Tela Recipe Details', () => {
     expect(buttonDrinks.innerHTML).toBe(
       '<img src="blackHeartIcon.svg" alt="Button Icon">',
     );
+
     expect(JSON.parse(localStorage.getItem(FAVORITE_RECIPES))).not.toBeNull();
 
     localStorage.clear();
