@@ -3,10 +3,9 @@ import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-function Profile(tittle) {
+function Profile() {
   const history = useHistory();
-  const userEmail = JSON.parse(localStorage.getItem('user'));
-  console.log(userEmail);
+  const userEmail = JSON.parse(localStorage.getItem('user') ?? '{}');
   const logoutHandle = () => {
     localStorage.clear();
     history.push('/');
@@ -14,7 +13,6 @@ function Profile(tittle) {
   return (
     <div>
       <Header title="Profile" withSearchBar={ false } />
-      <Header data-testid={ tittle } title="Profile" withSearchBar={ false } />
       <span
         data-testid="profile-email"
       >

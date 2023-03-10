@@ -68,8 +68,6 @@ function RecipeDetails() {
       (key) => key === id,
     );
 
-  console.log(isRecipeInProgress);
-
   const isFavorite = useCallback(
     () => getFromLocalStorage(FAVORITE_RECIPES).some((recipe) => recipe.id === id),
     [id],

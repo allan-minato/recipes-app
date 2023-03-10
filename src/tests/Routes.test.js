@@ -64,6 +64,7 @@ describe('Testando o componente Meals', () => {
   });
 
   it('Verifica se o componente Profile é renderizado', () => {
+    localStorage.setItem('user', JSON.stringify({ email: 'test@gmail.com' }));
     renderWithRouter(<Profile />, {
       initialEntries: ['/profile'],
     });
