@@ -2,23 +2,20 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import useFetch from '../hooks/useFetch';
-import { getDrinksRecommendations, getMealsRecommendations } from '../services/fetchAPI';
-import { treatRecommendationsData } from '../services/treatObject';
+import { getDrinksRecommendations, getMealsRecommendations } from '../services/fetchFunctions';
 
 import styles from '../styles/components/Carousel.module.css';
 
 import { MEALS, SIX } from '../services/constTypes';
 
 function Carousel({ pathname }) {
-  const { data } = useFetch(
+  const { data, isLoading } = useFetch(
     pathname === MEALS ? getDrinksRecommendations : getMealsRecommendations,
   );
 
-  const dataRecommendations = treatRecommendationsData(data, pathname);
-
   return (
     <div className={ styles.carouselContainer }>
-      {dataRecommendations.map((recommendation, index) => (
+      {!isLoading && data.map((recommendation, index) => (
         index < SIX && (
           <div
             key={ index }

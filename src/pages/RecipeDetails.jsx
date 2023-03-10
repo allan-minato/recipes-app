@@ -6,12 +6,11 @@ import Carousel from '../components/Carousel';
 import Header from '../components/Header';
 
 import useFetch from '../hooks/useFetch';
-import { getDrinkByID, getMealByID } from '../services/fetchAPI';
+import { getDrinkByID, getMealByID } from '../services/fetchFunctions';
 import {
   getFromLocalStorage,
   manageFavoritesInLocalStorage,
 } from '../services/localStorageHelpers';
-import { treatRecipeData } from '../services/treatObject';
 
 import styles from '../styles/pages/RecipeDetails.module.css';
 import shareIcon from '../images/shareIcon.svg';
@@ -45,22 +44,20 @@ function RecipeDetails() {
   const [, pathname, id] = useLocation().pathname.split('/');
 
   const {
-    data: dataRecipe,
+    data: {
+      image,
+      title,
+      category,
+      alcoholic,
+      video,
+      ingredients,
+      measures,
+      instructions,
+      strArea,
+    },
     isLoading,
     error,
   } = useFetch(pathname === MEALS ? getMealByID : getDrinkByID, id);
-
-  const {
-    image,
-    title,
-    category,
-    alcoholic,
-    video,
-    ingredients,
-    measures,
-    instructions,
-    strArea,
-  } = treatRecipeData(dataRecipe, pathname);
 
   const showButton = getFromLocalStorage(DONE_RECIPES).some(
     (key) => key.id === id,

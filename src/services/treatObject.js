@@ -1,8 +1,6 @@
-import { DRINK, MEAL, MEALS, ONE, THIRTY_TWO, ZERO } from './constTypes';
+import { ONE, THIRTY_TWO, ZERO } from './constTypes';
 
-export const treatRecipeData = (obj, recipeType) => {
-  const type = recipeType === MEALS ? MEAL : DRINK;
-
+export const treatRecipeData = (obj, type) => {
   const treatedObject = {};
 
   const treatedArray = [
@@ -53,32 +51,28 @@ export const treatRecipeData = (obj, recipeType) => {
   return treatedObject;
 };
 
-export const treatRecommendationsData = (obj, recipeType) => {
-  const type = recipeType === MEALS ? DRINK : MEAL;
+export const treatRecommendationsData = (obj, type) => Object.values(obj)
+  .map((key) => {
+    const treatedObject = {};
 
-  return Object.values(obj)
-    .map((key) => {
-      const treatedObject = {};
+    const treatedArray = Object.entries(key)
+      .map((info) => {
+        switch (info[ZERO]) {
+        case `str${type}Thumb`:
+          return ['image', info[ONE]];
+        case `str${type}`:
+          return ['title', info[ONE]];
+        case `id${type}`:
+          return ['id', info[ONE]];
+        default:
+          return null;
+        }
+      })
+      .filter((info) => (info));
 
-      const treatedArray = Object.entries(key)
-        .map((info) => {
-          switch (info[ZERO]) {
-          case `str${type}Thumb`:
-            return ['image', info[ONE]];
-          case `str${type}`:
-            return ['title', info[ONE]];
-          case `id${type}`:
-            return ['id', info[ONE]];
-          default:
-            return null;
-          }
-        })
-        .filter((info) => (info));
-
-      treatedArray.forEach((info) => {
-        treatedObject[`${info[ZERO]}`] = `${info[ONE]}`;
-      });
-
-      return treatedObject;
+    treatedArray.forEach((info) => {
+      treatedObject[`${info[ZERO]}`] = `${info[ONE]}`;
     });
-};
+
+    return treatedObject;
+  });

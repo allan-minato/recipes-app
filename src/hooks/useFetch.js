@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 const useFetch = (func, param = null) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState({});
   const [error, setError] = useState(null);
 
@@ -9,8 +9,8 @@ const useFetch = (func, param = null) => {
     setIsLoading(true);
     (async () => {
       try {
-        const response = await func(param);
-        setData(response);
+        const result = await func(param);
+        setData(result);
       } catch (e) {
         setError(true);
       } finally {
