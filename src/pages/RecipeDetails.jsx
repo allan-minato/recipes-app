@@ -68,6 +68,8 @@ function RecipeDetails() {
       (key) => key === id,
     );
 
+  console.log(isRecipeInProgress);
+
   const isFavorite = useCallback(
     () => getFromLocalStorage(FAVORITE_RECIPES).some((recipe) => recipe.id === id),
     [id],
@@ -178,7 +180,7 @@ function RecipeDetails() {
                 <Link to={ `/${pathname}/${id}/in-progress` }>
                   <Buttons
                     type="button"
-                    label={
+                    labelText={
                       isRecipeInProgress ? 'Continue Recipe' : 'Start Recipe'
                     }
                     dataTestid={ START_RECIPE_BTN }
