@@ -1,0 +1,9 @@
+.carouselContainer {
+  display: flex;
+  overflow: scroll;
+  width: 100%;
+}
+
+.carouselCard img {
+  width: 50vw;
+}
