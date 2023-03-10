@@ -2,7 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import useFetch from '../hooks/useFetch';
-import { getDrinksRecommendations, getMealsRecommendations } from '../services/fetchFunctions';
+import {
+  getDrinksRecommendations,
+  getMealsRecommendations,
+} from '../services/fetchFunctions';
 
 import styles from '../styles/components/Carousel.module.css';
 
