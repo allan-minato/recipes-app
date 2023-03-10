@@ -51,3 +51,7 @@ body {
   font-size: 1.6rem;
   width: 100%;
 }
+
+.risco {
+  text-decoration: line-through solid rgb(0, 0, 0);
+}

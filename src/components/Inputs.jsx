@@ -1,10 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-function Inputs({ type, dataTestid, onChange, name, value, labelText }) {
+function Inputs({
+  type,
+  dataTestid,
+  onChange,
+  name,
+  value,
+  labelText,
+  nameClass,
+}) {
   return (
     <>
-
       <input
         type={ type }
         name={ name }
@@ -13,7 +20,11 @@ function Inputs({ type, dataTestid, onChange, name, value, labelText }) {
         value={ value }
         id={ dataTestid }
       />
-      {labelText && <label htmlFor={ dataTestid }>{labelText}</label>}
+      {labelText && (
+        <label htmlFor={ dataTestid } className={ nameClass }>
+          {labelText}
+        </label>
+      )}
     </>
   );
 }

@@ -13,3 +13,13 @@ export const manageFavoritesInLocalStorage = (key, value) => {
     );
   }
 };
+
+export const removeFavoriteFromLocalStorage = (key, id) => {
+  const data = JSON.parse(localStorage.getItem(key) ?? '[]');
+  if (data.some((obj) => obj.id === id)) {
+    localStorage.setItem(
+      key,
+      JSON.stringify(data.filter((recipe) => recipe.id !== id)),
+    );
+  }
+};

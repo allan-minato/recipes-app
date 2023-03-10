@@ -23,6 +23,7 @@ export const RECIPE_TITLE = 'recipe-title';
 export const RECIPE_PHOTO = 'recipe-photo';
 export const RECIPE_CATEGORY = 'recipe-category';
 export const START_RECIPE_BTN = 'start-recipe-btn';
+export const FINISH_RECIPE_BTN = 'finish-recipe-btn';
 export const SHARE_BTN = 'share-btn';
 export const FAVORITE_BTN = 'favorite-btn';
 export const ERROR_MESSAGE = 'error-message';
