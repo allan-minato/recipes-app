@@ -38,7 +38,6 @@ describe('Testando o componente Login', () => {
     expect(button).toBeEnabled();
     userEvent.click(button);
 
-    // {\"email\":\"diego@gmail.com\"}
     expect(localStorage.getItem('user')).toEqual(JSON.stringify({ email }));
   });
 });

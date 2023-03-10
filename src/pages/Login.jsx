@@ -65,6 +65,7 @@ function Login() {
           type="submit"
           dataTestid="login-submit-btn"
           disabled={ isDisabled }
+          labelText="Entrar"
         />
       </form>
     </div>

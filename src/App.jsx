@@ -1,12 +1,16 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import './App.css';
+
 import Login from './pages/Login';
 import Meals from './pages/Meals';
 import Drinks from './pages/Drinks';
 import Profile from './pages/Profile';
 import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
+import RecipeDetails from './pages/RecipeDetails';
+import RecipeInProgress from './pages/RecipeInProgress';
+
+import './App.css';
 
 function App() {
   return (
@@ -41,22 +45,22 @@ function App() {
         <Route
           exact
           path="/meals/:id"
-          component={ Meals }
+          component={ RecipeDetails }
         />
         <Route
           exact
           path="/drinks/:id"
-          component={ Drinks }
+          component={ RecipeDetails }
         />
         <Route
           exact
           path="/meals/:id/in-progress"
-          component={ Meals }
+          component={ RecipeInProgress }
         />
         <Route
           exact
           path="/drinks/:id/in-progress"
-          component={ Meals }
+          component={ RecipeInProgress }
         />
 
       </Switch>
