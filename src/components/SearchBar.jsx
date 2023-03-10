@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import Buttons from './Buttons';
 import Inputs from './Inputs';
 import apiFetch from '../helpers/apiFetch';
+import RecipesContext from '../context/recipesContext';
 
 function SearchBar() {
   const [searchInfo, setSearchInfo] = useState({
     searchInput: '',
     searchRadio: '',
   });
-  const [pageLocation, setPageLocation] = useState('');
+  const { apiResponse, setApiResponse, setFilteredRecipes } = useContext(RecipesContext);
 
   const location = useLocation();
   const { pathname } = location;
+  const page = pathname.split('/')[1];
 
-  useEffect(() => {
-    if (pathname === '/meals') setPageLocation('themealdb');
-    if (pathname === '/drinks') setPageLocation('thecocktaildb');
-    return () => setPageLocation('');
-  }, []);
+  const history = useHistory();
+
+  const apiType = page === 'meals' ? 'themealdb' : 'thecocktaildb';
 
   const { searchInput, searchRadio } = searchInfo;
 
@@ -47,17 +47,41 @@ function SearchBar() {
   };
 
   const apiCall = async (endpoint) => {
-    const response = await apiFetch(pageLocation, endpoint);
-    console.log(response);
+    const response = await apiFetch(apiType, endpoint);
+    return response;
   };
 
-  const handleSubmit = (event) => {
+  const handleRedirect = (response) => {
+    if (response.length === 1) {
+      const firstOfArray = response[0];
+      const id = firstOfArray.idMeal || firstOfArray.idDrink;
+      history.push(`/${page}/${id}`);
+    }
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
     const endpoint = getEndpoint();
 
     if (!endpoint) return;
 
-    apiCall(endpoint);
+    const response = await apiCall(endpoint);
+
+    if (response[page] === null) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+      return;
+    }
+
+    if (response[page]) {
+      const api = {
+        ...apiResponse,
+        [page]: response[page],
+      };
+      setApiResponse(api);
+      setFilteredRecipes(api);
+      handleRedirect(response[page]);
+    }
   };
 
   return (
@@ -97,7 +121,7 @@ function SearchBar() {
         <Buttons
           type="submit"
           dataTestid="exec-search-btn"
-          onChange={ handleChange }
+          labelText="Enviar"
         />
       </form>
     </div>

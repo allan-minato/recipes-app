@@ -3,15 +3,26 @@ import React, { useMemo, useState } from 'react';
 import RecipesContext from './recipesContext';
 
 function RecipesProvider({ children }) {
-  const [counter, setCounter] = useState(0);
+  const [apiResponse, setApiResponse] = useState({
+    meals: [],
+    drinks: [],
+  });
+  const [filteredRecipes, setFilteredRecipes] = useState({
+    meals: [],
+    drinks: [],
+  });
 
   const value = useMemo(
     () => ({
-      counter,
-      setCounter,
+      apiResponse,
+      setApiResponse,
+      filteredRecipes,
+      setFilteredRecipes,
+
     }),
     [
-      counter,
+      apiResponse,
+      filteredRecipes,
     ],
   );
 
