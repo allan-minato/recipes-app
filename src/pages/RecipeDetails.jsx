@@ -178,7 +178,7 @@ function RecipeDetails() {
                 <Link to={ `/${pathname}/${id}/in-progress` }>
                   <Buttons
                     type="button"
-                    label={
+                    labelText={
                       isRecipeInProgress ? 'Continue Recipe' : 'Start Recipe'
                     }
                     dataTestid={ START_RECIPE_BTN }
