@@ -50,8 +50,27 @@ body {
   color: white;
   font-size: 1.6rem;
   width: 100%;
+  padding-bottom: 50px;
 }
 
 .risco {
   text-decoration: line-through solid rgb(0, 0, 0);
+}
+
+.btnRecipe {
+  background-color: green;
+  height: 50px;
+  bottom: 0;
+  color: white;
+  font-size: 1.6rem;
+  padding: 15px;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.btnRecipe:disabled {
+  cursor: not-allowed;
+  background-color: red;
 }

@@ -9,6 +9,7 @@ function Inputs({
   value,
   labelText,
   nameClass,
+  checked = false,
 }) {
   return (
     <>
@@ -17,6 +18,7 @@ function Inputs({
         name={ name }
         data-testid={ dataTestid }
         onChange={ onChange }
+        checked={ checked }
         value={ value }
         id={ dataTestid }
       />

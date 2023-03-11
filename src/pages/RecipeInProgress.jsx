@@ -1,8 +1,23 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+
 import Buttons from '../components/Buttons';
+import Inputs from '../components/Inputs';
 import Header from '../components/Header';
+
 import useFetch from '../hooks/useFetch';
+import { getDrinkByID, getMealByID } from '../services/fetchFunctions';
+import {
+  getFromLocalStorage,
+  manageFavoritesInLocalStorage,
+  setDoneRecipeInLocalStorage,
+  setInProgressToLocalStorage,
+} from '../services/localStorageHelpers';
+
+import shareIcon from '../images/shareIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+
 import {
   DRINK,
   ERROR_MESSAGE,
@@ -16,22 +31,12 @@ import {
   RECIPE_PHOTO,
   RECIPE_TITLE,
   SHARE_BTN,
+  IN_PROGRESS_RECIPES,
+  TWO_THOUSAND,
 } from '../services/constTypes';
-import { getDrinkByID, getMealByID } from '../services/fetchFunctions';
-import {
-  getFromLocalStorage,
-  manageFavoritesInLocalStorage,
-} from '../services/localStorageHelpers';
-
-import shareIcon from '../images/shareIcon.svg';
-import blackHeartIcon from '../images/blackHeartIcon.svg';
-import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-import Inputs from '../components/Inputs';
 
 function RecipeInProgress() {
-  const [, pathname, id] = useLocation().pathname.split('/');
-  const [recipeFavorite, setRecipeFavorite] = useState(false);
-  const [isURLCopied, setIsURLCopied] = useState(false);
+  const [, pathname, id, pageStatus] = useLocation().pathname.split('/');
 
   const {
     data: {
@@ -43,10 +48,18 @@ function RecipeInProgress() {
       measures,
       instructions,
       strArea,
+      strTags,
     },
     isLoading,
     error,
   } = useFetch(pathname === MEALS ? getMealByID : getDrinkByID, id);
+
+  const [recipeFavorite, setRecipeFavorite] = useState(false);
+  const [isURLCopied, setIsURLCopied] = useState(false);
+  const [completed, setCompleted] = useState({});
+  const [disableButton, setDisableButton] = useState(true);
+
+  const history = useHistory();
 
   const isFavorite = useCallback(
     () => getFromLocalStorage(FAVORITE_RECIPES).some((recipe) => recipe.id === id),
@@ -73,27 +86,59 @@ function RecipeInProgress() {
     setRecipeFavorite(isFavorite);
   };
 
-  const [completed, setCompleted] = useState([]);
+  const isRecipeInProgress = !!getFromLocalStorage(IN_PROGRESS_RECIPES)[pathname]
+    && !!getFromLocalStorage(IN_PROGRESS_RECIPES)[pathname][id];
 
-  const includes = (item) => {
-    const exist = completed.includes(item);
-    return exist ? 'risco' : '';
-  };
-
-  const lineThrough = ({ target: { checked, name } }) => {
-    if (checked) {
-      setCompleted([...completed, name]);
-      return;
+  useEffect(() => {
+    if (isRecipeInProgress) {
+      setCompleted(getFromLocalStorage(IN_PROGRESS_RECIPES)[pathname][id]);
     }
-    setCompleted(completed.filter((item) => item !== name));
+  }, [isRecipeInProgress, id, pathname]);
+
+  const onChange = ({ target: { name, checked } }) => {
+    setCompleted((prevState) => ({ ...prevState, [name]: checked }));
   };
+
+  useEffect(() => {
+    setInProgressToLocalStorage(completed, pathname, id);
+  }, [completed, id, pathname]);
+
+  useEffect(() => {
+    if (Object.values(completed).every((value) => value) && ingredients) {
+      if (Object.keys(completed).length === ingredients.length) {
+        setDisableButton(false);
+        return;
+      }
+      setDisableButton(true);
+    }
+  }, [completed, ingredients]);
 
   const urlToClipboard = () => {
-    navigator.clipboard.writeText(window.location.href);
+    navigator.clipboard.writeText(
+      String(window.location.href).replace(`/${pageStatus}`, ''),
+    );
     setIsURLCopied(true);
     setTimeout(() => {
       setIsURLCopied(false);
     }, TWO_THOUSAND);
+  };
+
+  const onClickFinish = () => {
+    setDoneRecipeInLocalStorage({
+      id,
+      type:
+        pathname === MEALS
+          ? MEAL.toLocaleLowerCase()
+          : DRINK.toLocaleLowerCase(),
+      nationality: strArea || '',
+      category,
+      alcoholicOrNot: alcoholic || '',
+      name: title,
+      image,
+      tags: strTags === 'null' ? [] : strTags.split(','),
+      doneDate: new Date(),
+    });
+    history.push('/done-recipes');
   };
 
   return (
@@ -128,14 +173,14 @@ function RecipeInProgress() {
                     <li
                       key={ ingredient }
                       data-testid={ `${index}-ingredient-step` }
-                      className={ includes(`${ingredient}-${index}`) }
+                      className={ completed[ingredient] ? 'risco' : undefined }
                     >
                       <Inputs
                         type="checkbox"
                         labelText={ `${ingredient} - ${measures[index]}` }
-                        nameClass={ includes(`${ingredient}-${index}`) }
-                        onChange={ lineThrough }
-                        name={ `${ingredient}-${index}` }
+                        onChange={ onChange }
+                        checked={ completed[ingredient] }
+                        name={ ingredient }
                       />
                     </li>
                   ))}
@@ -160,7 +205,13 @@ function RecipeInProgress() {
                   <p>Link copied!</p>
                 </div>
               )}
-              <Buttons dataTestid={ FINISH_RECIPE_BTN } />
+              <Buttons
+                dataTestid={ FINISH_RECIPE_BTN }
+                labelText="Finish Recipe"
+                disabled={ disableButton }
+                btnClass="btnRecipe"
+                onClick={ onClickFinish }
+              />
             </>
           )}
         </div>

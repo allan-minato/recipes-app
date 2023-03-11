@@ -12,7 +12,6 @@ import {
   manageFavoritesInLocalStorage,
 } from '../services/localStorageHelpers';
 
-import styles from '../styles/pages/RecipeDetails.module.css';
 import shareIcon from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
@@ -34,7 +33,6 @@ import {
   START_RECIPE_BTN,
   TWO_THOUSAND,
   VIDEO,
-  ZERO,
 } from '../services/constTypes';
 
 function RecipeDetails() {
@@ -63,10 +61,8 @@ function RecipeDetails() {
     (key) => key.id === id,
   );
 
-  const isRecipeInProgress = getFromLocalStorage(IN_PROGRESS_RECIPES).length !== ZERO
-    && Object.keys(getFromLocalStorage(IN_PROGRESS_RECIPES)[pathname]).some(
-      (key) => key === id,
-    );
+  const isRecipeInProgress = !!getFromLocalStorage(IN_PROGRESS_RECIPES)[pathname]
+    && !!getFromLocalStorage(IN_PROGRESS_RECIPES)[pathname][id];
 
   const isFavorite = useCallback(
     () => getFromLocalStorage(FAVORITE_RECIPES).some((recipe) => recipe.id === id),
@@ -107,7 +103,7 @@ function RecipeDetails() {
       {isLoading ? (
         <p>Carregando...</p>
       ) : (
-        <div className={ styles.mainContainer }>
+        <div>
           {error ? (
             <p data-testid={ ERROR_MESSAGE }>Erro</p>
           ) : (
@@ -182,7 +178,7 @@ function RecipeDetails() {
                       isRecipeInProgress ? 'Continue Recipe' : 'Start Recipe'
                     }
                     dataTestid={ START_RECIPE_BTN }
-                    btnClass={ styles.btnRecipe }
+                    btnClass="btnRecipe"
                   />
                 </Link>
               )}
