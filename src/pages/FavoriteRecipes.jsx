@@ -5,17 +5,42 @@ import { favoritePromise } from '../services/favoriteHelpers';
 
 function FavoriteRecipes() {
   const [favoriteArray, setfavoriteArray] = useState([]);
-  const getRecipes = async () => {
-    const promise = await favoritePromise();
-    setfavoriteArray(promise);
+
+  const [favoriteFilters, setFavoriteFilters] = useState({
+    all: true,
+    meal: false,
+    drink: false,
+  });
+
+  const handleFilter = (filter) => {
+    const newFavoriteFilters = {
+      all: false,
+      meal: false,
+      drink: false,
+      [filter]: true,
+    };
+    setFavoriteFilters(newFavoriteFilters);
   };
 
-  useEffect(
-    () => {
-      getRecipes();
-    },
-    [favoriteArray],
-  );
+  useEffect(() => {
+    const getRecipes = async () => {
+      const recipes = await favoritePromise();
+      switch (true) {
+      case favoriteFilters.all:
+        setfavoriteArray(recipes);
+        break;
+      case favoriteFilters.meal:
+        setfavoriteArray(recipes.filter((recipe) => recipe.type === 'meal'));
+        break;
+      case favoriteFilters.drink:
+        setfavoriteArray(recipes.filter((recipe) => recipe.type === 'drink'));
+        break;
+      default:
+        setfavoriteArray(recipes);
+      }
+    };
+    getRecipes();
+  }, [favoriteArray, favoriteFilters]);
 
   return (
     <div>
@@ -23,11 +48,15 @@ function FavoriteRecipes() {
         title="Favorite Recipes"
         withSearchBar={ false }
       />
-      <div>
-        <button data-testid="filter-by-all-btn">All</button>
-        <button data-testid="filter-by-meal-btn">Meals</button>
-        <button data-testid="filter-by-drink-btn">Drinks</button>
-      </div>
+      <button data-testid="filter-by-all-btn" onClick={ () => handleFilter('all') }>
+        All
+      </button>
+      <button data-testid="filter-by-meal-btn" onClick={ () => handleFilter('meal') }>
+        Meals
+      </button>
+      <button data-testid="filter-by-drink-btn" onClick={ () => handleFilter('drink') }>
+        Drinks
+      </button>
       {favoriteArray.map((recipes, index) => (
         recipes.type === 'meal'
           ? (
