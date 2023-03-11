@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import FavoriteMeal from '../components/FavoriteMeal';
 import { favoritePromise } from '../services/favoriteHelpers';
-import FavoriteDrinks from '../components/FavoriteDrinks';
 
 function FavoriteRecipes() {
   const [favoriteArray, setfavoriteArray] = useState([]);
@@ -68,7 +67,7 @@ function FavoriteRecipes() {
             />
           )
           : (
-            <FavoriteDrinks
+            <FavoriteMeal
               recipe={ recipes }
               index={ index }
               key={ index }
