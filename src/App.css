@@ -1,6 +1,7 @@
 html {
   font-size: 62.5%;
 }
+
 .meals {
   align-items: center;
   background: #0fa36b;
@@ -28,7 +29,6 @@ html {
   opacity: 0.6;
   transform-origin: 36px 66px;
 }
-
 #iceRight {
   animation: clink .8s .2s infinite ease;
   opacity: 0.6;

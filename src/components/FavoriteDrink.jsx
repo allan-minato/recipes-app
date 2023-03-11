@@ -5,7 +5,7 @@ import shareIcon from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import { disfavor } from '../services/favoriteHelpers';
 
-function FavoriteMeal({ recipe, index = 0 }) {
+function FavoriteDrink({ recipe, index = 0 }) {
   const [mensage, setMensage] = useState(false);
 
   const currentType = 'meal';
@@ -37,9 +37,7 @@ function FavoriteMeal({ recipe, index = 0 }) {
           <h3 data-testid={ `${index}-horizontal-name` }>{ recipe.name }</h3>
         </Link>
       </div>
-      <p data-testid={ `${index}-horizontal-top-text` }>
-        {`${recipe.nationality} - ${recipe.category}`}
-      </p>
+      <p data-testid={ `${index}-horizontal-top-text` }>{recipe.alcoholicOrNot}</p>
       <button
         src={ shareIcon }
         data-testid={ `${index}-horizontal-share-btn` }
@@ -59,7 +57,7 @@ function FavoriteMeal({ recipe, index = 0 }) {
   );
 }
 
-FavoriteMeal.propTypes = {
+FavoriteDrink.propTypes = {
   index: PropTypes.number,
   recipe: PropTypes.shape({
     id: PropTypes.string,
@@ -68,7 +66,8 @@ FavoriteMeal.propTypes = {
     image: PropTypes.string,
     name: PropTypes.string,
     nationality: PropTypes.string,
+    alcoholicOrNot: PropTypes.string,
   }).isRequired,
 };
 
-export default FavoriteMeal;
+export default FavoriteDrink;
