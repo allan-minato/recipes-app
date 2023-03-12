@@ -14,40 +14,36 @@ html {
   width: 100%;
 }
 
-.rocksGlass {
-  animation: shake 1s infinite ease;
-  max-height: 80vh;
-}
-
 .recipe-img {
   max-height: 150px;
-}
-
-/*
-#iceLeft {
-  animation: clink .8s infinite ease;
-  opacity: 0.6;
-  transform-origin: 36px 66px;
-}
-
-#iceRight {
-  animation: clink .8s .2s infinite ease;
-  opacity: 0.6;
-  transform-origin: 60px 78px;
-}
-*/
-
-.meals > .logo {
-  animation: shake 1.5s infinite ease;
-  color: aliceblue;
-  font-family: Montserrat , sans-serif;
-  font-size: 3em;
-  font-weight: 900;
 }
 
 body {
   background-color: rgb(121, 121, 121);
   color: white;
   font-size: 1.6rem;
+  padding-bottom: 50px;
   width: 100%;
+}
+
+.risco {
+  text-decoration: line-through solid black;
+}
+
+.btnRecipe {
+  background-color: green;
+  bottom: 0;
+  color: white;
+  cursor: pointer;
+  font-size: 1.6rem;
+  height: 50px;
+  padding: 15px;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+}
+
+.btnRecipe:disabled {
+  background-color: red;
+  cursor: not-allowed;
 }
