@@ -38,7 +38,7 @@ function Login() {
     event.preventDefault();
     const { email } = userInfo;
     localStorage.setItem('user', JSON.stringify({ email }));
-    history.push('/meals');
+    history.push('/');
   };
 
   const { email, password } = userInfo;

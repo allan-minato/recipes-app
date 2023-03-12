@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 
 function Profile() {
   const history = useHistory();
-  const userEmail = JSON.parse(localStorage.getItem('user') ?? '{}');
+  const userEmail = JSON.parse(localStorage.getItem('user'));
   const logoutHandle = () => {
     localStorage.clear();
     history.push('/');
@@ -18,7 +18,7 @@ function Profile() {
       >
         USER EMAIL:
         {' '}
-        { userEmail.email }
+        { userEmail && userEmail.email }
       </span>
       <button
         data-testid="profile-done-btn"
