@@ -1,0 +1,65 @@
+.loginContainer 
+  background-color: #41197F
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  height: 100vh
+  font-size: 2.5rem
+  text-transform: uppercase
+  letter-spacing: 5px
+  font-weight: 700
+
+  img
+    position: fixed
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    opacity: 10%
+    width: 100vw
+  
+  span 
+    margin-bottom: 15px
+  
+  form 
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    height: 70vh
+    gap: 1rem
+    z-index: 1
+  
+  input
+    border: 1px solid #2446b4
+    border-radius: 5px
+    padding: 0.5rem
+    width: 70vw
+    background-color: #F5F5F5
+
+    &:focus
+      outline: none
+    
+  button
+    border: none
+    border-radius: 5px
+    padding: 0.5rem
+    width: 70vw
+    background-color: #caa33e
+    color: #F5F5F5
+    font-weight: bold
+    font-size: 1.5rem
+    cursor: pointer
+    transition: 0.3s
+
+    &:hover:enabled
+      background-color: #caa33e
+      transform: scale(1.05)
+    
+    &:disabled
+      background-color: #caa33e
+      opacity: 0.5
+      cursor: not-allowed
+    
+  
+

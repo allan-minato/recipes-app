@@ -3,6 +3,22 @@ import React, { useContext, useEffect, useState } from 'react';
 import RecipesContext from '../context/recipesContext';
 import apiFetch from '../helpers/apiFetch';
 import Buttons from './Buttons';
+import beefIcon from '../assets/svg/beef.svg';
+import goatIcon from '../assets/svg/goat.svg';
+import chickenIcon from '../assets/svg/chicken.svg';
+import breakfastIcon from '../assets/svg/breakfast.svg';
+import dessertIcon from '../assets/svg/dessert.svg';
+import allIcon from '../assets/svg/allIcon.svg';
+import '../styles/components/CategoriesFilter.sass';
+
+const icons = {
+  Beef: beefIcon,
+  Goat: goatIcon,
+  Chicken: chickenIcon,
+  Breakfast: breakfastIcon,
+  Dessert: dessertIcon,
+  All: allIcon,
+};
 
 function CategoriesFilter({ apiType, pageName }) {
   const [categoryList, setCategoryList] = useState([]);
@@ -60,7 +76,16 @@ function CategoriesFilter({ apiType, pageName }) {
   }, [categoryFilter]);
 
   return (
-    <div>
+    <div className="categoriesContainer">
+      <Buttons
+        category="All"
+        labelText="All"
+        dataTestid="All-category-filter"
+        onClick={ () => handleClick('All') }
+        icon={ icons.All }
+        btnClass={ `categoryBtn ${categoryFilter === '' ? 'Selected' : ''}` }
+      />
+
       {categoryList.map((category) => (
         <Buttons
           key={ category }
@@ -68,14 +93,11 @@ function CategoriesFilter({ apiType, pageName }) {
           labelText={ category }
           dataTestid={ `${category}-category-filter` }
           onClick={ () => handleClick(category) }
+          icon={ icons[category] }
+          btnClass={ `categoryBtn ${categoryFilter === category ? 'Selected' : ''}` }
         />
       ))}
-      <Buttons
-        category="All"
-        labelText="All"
-        dataTestid="All-category-filter"
-        onClick={ () => handleClick('All') }
-      />
+
     </div>
   );
 }

@@ -1,0 +1,57 @@
+.searchBarContainer 
+  margin: 1.5rem 0 
+
+  form 
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    margin: 0 auto
+    width: 95vw
+    background-color: #41197F
+    border-radius: 10px
+
+    input[type="text"] 
+      border: 1px solid #2446b4
+      border-radius: 5px
+      padding: 0.5rem
+      background-color: #F5F5F5
+      width: 100%
+      height: 3.5rem
+
+      &:focus 
+        outline: none
+    
+    .radios
+      display: flex
+      align-items: center
+      justify-content: center
+      margin-top: 1rem
+      width: 100%
+      font-size: 1.2rem
+      
+      input[type="radio"] 
+        margin: 0 0.5rem
+        margin-left: 2rem
+
+    button
+      border: none
+      border-radius: 5px
+      padding: 0.5rem
+      width: 70vw
+      background-color: #caa33e
+      color: #F5F5F5
+      font-weight: bold
+      font-size: 1.5rem
+      cursor: pointer
+      transition: 0.3s
+      margin: 1rem 0
+
+      &:hover:enabled
+        background-color: #caa33e
+        transform: scale(1.05)
+      
+      &:disabled
+        background-color: #caa33e
+        opacity: 0.5
+        cursor: not-allowed

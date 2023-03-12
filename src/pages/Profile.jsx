@@ -12,6 +12,7 @@ function Profile() {
   };
   return (
     <div>
+
       <Header title="Profile" withSearchBar={ false } />
       <span
         data-testid="profile-email"

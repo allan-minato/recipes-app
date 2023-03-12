@@ -30,6 +30,10 @@ body {
   width: 100%;
 }
 
+.page-title {
+  display: none;
+}
+
 .risco {
   text-decoration: line-through solid black;
 }

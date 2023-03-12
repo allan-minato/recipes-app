@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Buttons from '../components/Buttons';
 import Inputs from '../components/Inputs';
+import '../styles/pages/Login.sass';
+import logo from '../assets/svg/fullLogo.svg';
 
 function Login() {
   const [userInfo, setUserInfo] = useState({
@@ -43,15 +45,18 @@ function Login() {
 
   const { email, password } = userInfo;
   return (
-    <div>
-      <span>Login Page</span>
+    <div className="loginContainer">
+      <img src={ logo } alt="logo" />
+
       <form onSubmit={ handleSubmit }>
+        <span>Login</span>
         <Inputs
           type="email"
           dataTestid="email-input"
           name="email"
           value={ email }
           onChange={ handleChange }
+          placeholder="Email"
         />
         <Inputs
           type="password"
@@ -59,6 +64,7 @@ function Login() {
           name="password"
           value={ password }
           onChange={ handleChange }
+          placeholder="Password"
         />
 
         <Buttons

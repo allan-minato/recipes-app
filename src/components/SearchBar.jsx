@@ -4,6 +4,7 @@ import Buttons from './Buttons';
 import Inputs from './Inputs';
 import apiFetch from '../helpers/apiFetch';
 import RecipesContext from '../context/recipesContext';
+import '../styles/components/Search.sass';
 
 function SearchBar() {
   const [searchInfo, setSearchInfo] = useState({
@@ -23,6 +24,7 @@ function SearchBar() {
   const { searchInput, searchRadio } = searchInfo;
 
   const handleChange = ({ target }) => {
+    console.log(target);
     const { name, value } = target;
     setSearchInfo({
       ...searchInfo,
@@ -85,7 +87,7 @@ function SearchBar() {
   };
 
   return (
-    <div>
+    <div className="searchBarContainer">
       <form onSubmit={ handleSubmit }>
         <Inputs
           type="text"
@@ -93,35 +95,41 @@ function SearchBar() {
           name="searchInput"
           value={ searchInput }
           onChange={ handleChange }
+          placeholder="Search"
         />
-        <Inputs
-          type="radio"
-          dataTestid="ingredient-search-radio"
-          name="searchRadio"
-          value="ingredient"
-          labelText="Ingrediente"
-          onChange={ handleChange }
-        />
-        <Inputs
-          type="radio"
-          dataTestid="name-search-radio"
-          name="searchRadio"
-          value="name"
-          labelText="Nome"
-          onChange={ handleChange }
-        />
-        <Inputs
-          type="radio"
-          dataTestid="first-letter-search-radio"
-          name="searchRadio"
-          value="firstLetter"
-          labelText="Primeira letra"
-          onChange={ handleChange }
-        />
+
+        <div className="radios">
+
+          <Inputs
+            type="radio"
+            dataTestid="ingredient-search-radio"
+            name="searchRadio"
+            value="ingredient"
+            labelText="Ingredient"
+            onChange={ handleChange }
+          />
+
+          <Inputs
+            type="radio"
+            dataTestid="name-search-radio"
+            name="searchRadio"
+            value="name"
+            labelText="Name"
+            onChange={ handleChange }
+          />
+          <Inputs
+            type="radio"
+            dataTestid="first-letter-search-radio"
+            name="searchRadio"
+            value="firstLetter"
+            labelText="First Letter"
+            onChange={ handleChange }
+          />
+        </div>
         <Buttons
           type="submit"
           dataTestid="exec-search-btn"
-          labelText="Enviar"
+          labelText="Search"
         />
       </form>
     </div>
