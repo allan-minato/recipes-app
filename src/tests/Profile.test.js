@@ -22,6 +22,7 @@ describe('Testando o componente Profile', () => {
     const buttonLogout = screen.getByTestId('profile-logout-btn');
     expect(buttonLogout).toBeInTheDocument();
   });
+
   it('Testa se é redirecionado ao clicar no botão "Done Recipes"', () => {
     const history = createMemoryHistory();
     localStorage.setItem('user', JSON.stringify({ email: VALIDEMAIL }));
@@ -35,6 +36,7 @@ describe('Testando o componente Profile', () => {
     fireEvent.click(buttonRecipesDone);
     expect(history.location.pathname).toBe(doneRecipesPage);
   });
+
   it('Testa se é redirecionado ao clicar no botão "Favorite Recipes"', () => {
     const history = createMemoryHistory();
     localStorage.setItem('user', JSON.stringify({ email: VALIDEMAIL }));
@@ -48,6 +50,7 @@ describe('Testando o componente Profile', () => {
     fireEvent.click(buttonFavoriteRecipes);
     expect(history.location.pathname).toBe(favoriteRecipesPage);
   });
+
   it('Testa se é redirecionado ao clicar no botão "Logout"', () => {
     const history = createMemoryHistory();
     localStorage.setItem('user', JSON.stringify({ email: VALIDEMAIL }));
@@ -62,6 +65,7 @@ describe('Testando o componente Profile', () => {
     expect(localStorage.getItem('user')).toBeNull();
     expect(history.location.pathname).toBe(LogoutPage);
   });
+
   it('Testa se Header está presente na página Profile', () => {
     const history = createMemoryHistory();
     localStorage.setItem('user', JSON.stringify({ email: VALIDEMAIL }));
@@ -71,11 +75,6 @@ describe('Testando o componente Profile', () => {
       </Router>,
     );
     const headerProfile = screen.getByTestId('page-title');
-    // const ProfilePage = '/Profile';
     expect(headerProfile).toBeInTheDocument();
-    // fireEvent.click(headerProfile);
-    // expect(history.location.pathname).toBe(ProfilePage);
-
-    // const button = screen.getByTestId('login-submit-btn');
   });
 });

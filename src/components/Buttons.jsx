@@ -1,20 +1,29 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-function Buttons({ type, dataTestid, disabled, labelText, onClick, btnClass, icon }) {
+function Buttons({
+  type,
+  name,
+  dataTestid,
+  isDisabled = false,
+  labelText,
+  onClick,
+  btnClass,
+  icon,
+}) {
   return (
     <button
       key={ labelText }
       type={ type }
       data-testid={ dataTestid }
-      disabled={ disabled }
+      disabled={ isDisabled }
       onClick={ onClick }
       className={ btnClass }
       src={ icon }
+      name={ name }
     >
-      {icon
-        && <img src={ icon } alt="Button Icon" />}
-      { labelText }
+      {icon && <img src={ icon } alt="Button Icon" />}
+      {labelText}
     </button>
   );
 }
