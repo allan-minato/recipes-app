@@ -3,26 +3,21 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
-import { disfavor } from '../services/favoriteHelpers';
 
-function FavoriteMeal({ recipe, index = 0 }) {
+function FavoriteMeal({ recipe, index = 0, onClick }) {
   const [mensage, setMensage] = useState(false);
 
   const currentType = 'meal';
 
   const route = currentType.includes(recipe.type.toLowerCase()) ? '/meals' : '/drinks';
 
-  const shareRecipe = async () => {
+  const shareRecipe = () => {
     try {
-      await navigator.clipboard.writeText(`http://localhost:3000${route}/${recipe.id}`);
+      navigator.clipboard.writeText(`http://localhost:3000${route}/${recipe.id}`);
     } catch (error) {
       console.error(error);
     }
     setMensage(true);
-  };
-
-  const remove = async () => {
-    await disfavor(recipe);
   };
 
   return (
@@ -33,6 +28,8 @@ function FavoriteMeal({ recipe, index = 0 }) {
             alt="foodpicture"
             src={ recipe.image }
             data-testid={ `${index}-horizontal-image` }
+            className="doneCards-img"
+
           />
           <h3 data-testid={ `${index}-horizontal-name` }>{ recipe.name }</h3>
         </Link>
@@ -51,7 +48,8 @@ function FavoriteMeal({ recipe, index = 0 }) {
       <button
         src={ blackHeartIcon }
         data-testid={ `${index}-horizontal-favorite-btn` }
-        onClick={ remove }
+        onClick={ () => onClick(recipe.id) }
+
       >
         <img src={ blackHeartIcon } alt="Black heart icon" />
       </button>
@@ -61,6 +59,7 @@ function FavoriteMeal({ recipe, index = 0 }) {
 
 FavoriteMeal.propTypes = {
   index: PropTypes.number,
+  onClick: PropTypes.func.isRequired,
   recipe: PropTypes.shape({
     id: PropTypes.string,
     type: PropTypes.string,
