@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import FavoriteMeal from '../components/FavoriteMeal';
-import { favoritePromise } from '../services/favoriteHelpers';
+import { disfavor, favoritePromise } from '../services/favoriteHelpers';
 import FavoriteDrink from '../components/FavoriteDrink';
 
 function FavoriteRecipes() {
@@ -24,8 +24,8 @@ function FavoriteRecipes() {
   };
 
   useEffect(() => {
-    const getRecipes = async () => {
-      const recipes = await favoritePromise();
+    const getRecipes = () => {
+      const recipes = favoritePromise();
       switch (true) {
       case favoriteFilters.all:
         setfavoriteArray(recipes);
@@ -41,7 +41,13 @@ function FavoriteRecipes() {
       }
     };
     getRecipes();
-  }, [favoriteArray, favoriteFilters]);
+  }, [favoriteFilters]);
+
+  const remove = (id) => {
+    disfavor(id);
+    const recipes = favoritePromise();
+    setfavoriteArray(recipes);
+  };
 
   return (
     <div>
@@ -65,6 +71,7 @@ function FavoriteRecipes() {
               recipe={ recipes }
               index={ index }
               key={ index }
+              onClick={ remove }
             />
           )
           : (
@@ -72,6 +79,7 @@ function FavoriteRecipes() {
               recipe={ recipes }
               index={ index }
               key={ index }
+              onClick={ remove }
             />
           )
       ))}

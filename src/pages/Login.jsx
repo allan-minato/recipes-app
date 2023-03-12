@@ -38,7 +38,7 @@ function Login() {
     event.preventDefault();
     const { email } = userInfo;
     localStorage.setItem('user', JSON.stringify({ email }));
-    history.push('/');
+    history.push('/meals');
   };
 
   const { email, password } = userInfo;
@@ -64,7 +64,7 @@ function Login() {
         <Buttons
           type="submit"
           dataTestid="login-submit-btn"
-          disabled={ isDisabled }
+          isDisabled={ isDisabled }
           labelText="Entrar"
         />
       </form>

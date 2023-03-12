@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import shareIcon from '../images/shareIcon.svg';
 
@@ -64,22 +65,28 @@ function DoneRecipes() {
         <div className="done-cards">
           {filteredDoneRecipes && filteredDoneRecipes.map((recipe, index) => (
             <div key={ index }>
-              <img
-                data-testid={ `${index}-horizontal-image` }
-                src={ recipe.image }
-                alt={ recipe.name }
-
-              />
+              <Link to={ `/${recipe.type}s/${recipe.id}` }>
+                <div>
+                  <img
+                    data-testid={ `${index}-horizontal-image` }
+                    src={ recipe.image }
+                    alt={ recipe.name }
+                    className="doneCards-img"
+                  />
+                </div>
+              </Link>
 
               <div className="doneCards-descriptions">
                 <h3 data-testid={ `${index}-horizontal-top-text` }>
                   {recipe.alcoholicOrNot}
                 </h3>
 
-                <h2 data-testid={ `${index}-horizontal-name` }>
-                  {`Name: ${recipe.name}`}
+                <Link to={ `/${recipe.type}s/${recipe.id}` }>
+                  <h2 data-testid={ `${index}-horizontal-name` }>
+                    {`Name: ${recipe.name}`}
 
-                </h2>
+                  </h2>
+                </Link>
                 <h3 data-testid={ `${index}-horizontal-top-text` }>
                   {`Category-nationality: ${recipe.nationality} - ${recipe.category}`}
                 </h3>

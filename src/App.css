@@ -18,6 +18,10 @@ html {
   max-height: 150px;
 }
 
+.doneCards-img {
+  max-height: 150px;
+}
+
 body {
   background-color: rgb(121, 121, 121);
   color: white;
