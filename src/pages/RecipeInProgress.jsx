@@ -103,15 +103,17 @@ function RecipeInProgress() {
     setInProgressToLocalStorage(completed, pathname, id);
   }, [completed, id, pathname]);
 
+  const isAllChecked = Object.values(completed).every((value) => value)
+    && ingredients
+    && Object.keys(completed).length === ingredients.length;
+
   useEffect(() => {
-    if (Object.values(completed).every((value) => value) && ingredients) {
-      if (Object.keys(completed).length === ingredients.length) {
-        setDisableButton(false);
-        return;
-      }
+    if (isAllChecked) {
+      setDisableButton(false);
+    } else {
       setDisableButton(true);
     }
-  }, [completed, ingredients]);
+  }, [isAllChecked, completed]);
 
   const urlToClipboard = () => {
     navigator.clipboard.writeText(
@@ -168,7 +170,7 @@ function RecipeInProgress() {
               </p>
               <p data-testid={ INSTRUCTIONS }>{instructions}</p>
               <div>
-                <ul>
+                <ul data-testid="ingredients-ul">
                   {ingredients.map((ingredient, index) => (
                     <li
                       key={ ingredient }
@@ -180,6 +182,7 @@ function RecipeInProgress() {
                         labelText={ `${ingredient} - ${measures[index]}` }
                         onChange={ onChange }
                         checked={ completed[ingredient] }
+                        dataTestid={ `${index}-ingredient-checkbox` }
                         name={ ingredient }
                       />
                     </li>
@@ -206,9 +209,11 @@ function RecipeInProgress() {
                 </div>
               )}
               <Buttons
+                type="button"
                 dataTestid={ FINISH_RECIPE_BTN }
                 labelText="Finish Recipe"
-                disabled={ disableButton }
+                isDisabled={ disableButton }
+                name="Finish Recipe"
                 btnClass="btnRecipe"
                 onClick={ onClickFinish }
               />
