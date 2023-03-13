@@ -1,5 +1,11 @@
 .searchBarContainer 
-  margin: 1.5rem 0 
+  animation: showSlowly 0.5s ease-in-out
+
+  @keyframes showSlowly
+    0%
+      opacity: 0
+    100%
+      opacity: 1
 
   form 
     display: flex
@@ -39,7 +45,7 @@
       border-radius: 5px
       padding: 0.5rem
       width: 70vw
-      background-color: #caa33e
+      background-color: #e0ac29
       color: #F5F5F5
       font-weight: bold
       font-size: 1.5rem
@@ -50,8 +56,3 @@
       &:hover:enabled
         background-color: #caa33e
         transform: scale(1.05)
-      
-      &:disabled
-        background-color: #caa33e
-        opacity: 0.5
-        cursor: not-allowed

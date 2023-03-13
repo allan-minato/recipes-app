@@ -99,7 +99,6 @@ function SearchBar() {
         />
 
         <div className="radios">
-
           <Inputs
             type="radio"
             dataTestid="ingredient-search-radio"
@@ -108,7 +107,6 @@ function SearchBar() {
             labelText="Ingredient"
             onChange={ handleChange }
           />
-
           <Inputs
             type="radio"
             dataTestid="name-search-radio"

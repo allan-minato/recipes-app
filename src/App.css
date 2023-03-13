@@ -28,6 +28,7 @@ body {
   font-size: 1.6rem;
   padding-bottom: 50px;
   width: 100%;
+  max-width: 100vw;
 }
 
 .page-title {

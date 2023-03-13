@@ -18,14 +18,16 @@ function Header({ title, withProfileIcon = true, withSearchBar = true }) {
   return (
     <>
       <div className="headerContainer">
-        <div className="imgContainer">
+        <Link to="/meals" className="imgContainer">
+
           <img src={ logo } alt="logo" />
           <p>
             Recipes
             {' '}
             <span>app</span>
           </p>
-        </div>
+
+        </Link>
         <div className="profileContainer">
           <h1 data-testid="page-title" className="page-title">{title}</h1>
           {withSearchBar
